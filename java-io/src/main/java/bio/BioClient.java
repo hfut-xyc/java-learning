@@ -3,7 +3,7 @@ package bio;
 import java.io.*;
 import java.net.Socket;
 
-public class Client {
+public class BioClient {
 
     private static final String HOST = "127.0.0.1";
 
@@ -17,7 +17,7 @@ public class Client {
 
     private BufferedWriter writer;
 
-    public Client() {
+    public BioClient() {
         try {
             this.socket = new Socket(HOST, PORT);
             this.reader = new BufferedReader(
@@ -27,7 +27,7 @@ public class Client {
                     new OutputStreamWriter(socket.getOutputStream())
             );
             // create a new thread to receive message from server
-            new Thread(new ReceiveHandler(this)).start();
+            new Thread(new ReceiveTask(this)).start();
 
             // send what user inputs to server
             BufferedReader consoleReader = new BufferedReader(
@@ -46,19 +46,19 @@ public class Client {
         }
     }
 
-    static class ReceiveHandler implements Runnable {
+    static class ReceiveTask implements Runnable {
 
-        private Client client;
+        private BioClient bioClient;
 
-        public ReceiveHandler(Client client) {
-            this.client = client;
+        public ReceiveTask(BioClient bioClient) {
+            this.bioClient = bioClient;
         }
 
         @Override
         public void run() {
             try {
                 String msg;
-                while ((msg = client.reader.readLine()) != null) {
+                while ((msg = bioClient.reader.readLine()) != null) {
                     System.out.println(msg);
                 }
             } catch (IOException e) {
@@ -68,6 +68,6 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        Client client = new Client();
+        BioClient bioClient = new BioClient();
     }
 }

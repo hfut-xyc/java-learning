@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
 import java.util.Set;
 
 
-public class Client {
+public class NioClient {
 
     private static final String HOST = "127.0.0.1";
     private static final int PORT = 8080;
@@ -23,7 +23,7 @@ public class Client {
     private ByteBuffer readBuffer = ByteBuffer.allocate(1024);
     private ByteBuffer writeBuffer = ByteBuffer.allocate(1024);
 
-    public Client() {
+    public NioClient() {
         try {
             client = SocketChannel.open();
             client.configureBlocking(false);
@@ -97,10 +97,10 @@ public class Client {
 
     static class UserInputHandler implements Runnable {
 
-        private Client client;
+        private NioClient nioClient;
 
-        public UserInputHandler(Client client) {
-            this.client = client;
+        public UserInputHandler(NioClient nioClient) {
+            this.nioClient = nioClient;
         }
 
         @Override
@@ -111,7 +111,7 @@ public class Client {
                 );
                 while (true) {
                     String input = consoleReader.readLine();
-                    client.send(input);
+                    nioClient.send(input);
                     if (EXIT.equals(input)) {
                         break;
                     }
@@ -123,6 +123,6 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        Client client = new Client();
+        NioClient nioClient = new NioClient();
     }
 }

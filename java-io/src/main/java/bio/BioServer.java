@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Server {
+public class BioServer {
 
     private static final int PORT = 8080;
 
@@ -16,7 +16,7 @@ public class Server {
     // use thread-safe container because multiple threads modify it
     private volatile ConcurrentHashMap<Integer, Writer> clients;
 
-    public Server() {
+    public BioServer() {
         this.clients = new ConcurrentHashMap<Integer, Writer>(10);
         try {
             this.serverSocket = new ServerSocket(PORT);
@@ -26,8 +26,8 @@ public class Server {
                 // wait for a client to connect
                 Socket socket = serverSocket.accept();
 
-                // create a new thread to interact with the client
-                new Thread(new ForwardHandler(this, socket)).start();
+                // create a new thread to forward messages to all clients
+                new Thread(new ForwardTask(this, socket)).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -77,28 +77,28 @@ public class Server {
         }
     }
 
-    static class ForwardHandler implements Runnable {
+    static class ForwardTask implements Runnable {
 
-        private Server server;
+        private BioServer bioServer;
 
         private Socket socket;
 
-        public ForwardHandler(Server server, Socket socket) {
-            this.server = server;
+        public ForwardTask(BioServer bioServer, Socket socket) {
+            this.bioServer = bioServer;
             this.socket = socket;
         }
 
         @Override
         public void run() {
             try {
-                server.addClient(socket);
+                bioServer.addClient(socket);
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(socket.getInputStream())
                 );
                 String msg;
                 while ((msg = reader.readLine()) != null) {
                     String forwardMsg = "Client[" + socket.getPort() + "]: " + msg + "\n";
-                    server.forwardMessage(socket, forwardMsg);
+                    bioServer.forwardMessage(socket, forwardMsg);
                     System.out.print(forwardMsg);
                     if (EXIT.equals(msg)) {
                         break;
@@ -108,7 +108,7 @@ public class Server {
                 e.printStackTrace();
             } finally {
                 try {
-                    server.removeClient(socket);
+                    bioServer.removeClient(socket);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -117,6 +117,6 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        Server server = new Server();
+        BioServer bioServer = new BioServer();
     }
 }

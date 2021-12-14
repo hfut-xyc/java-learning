@@ -8,7 +8,7 @@ import java.nio.channels.*;
 import java.nio.charset.Charset;
 import java.util.Set;
 
-public class Server {
+public class NioServer {
 
     private static final int PORT = 8080;
     private static final String EXIT = "exit";
@@ -19,7 +19,7 @@ public class Server {
     private ByteBuffer readBuffer = ByteBuffer.allocate(1024);
     private ByteBuffer writeBuffer = ByteBuffer.allocate(1024);
 
-    public Server() {
+    public NioServer() {
         try {
             server = ServerSocketChannel.open();
             server.configureBlocking(false);
@@ -100,7 +100,7 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        Server server = new Server();
+        NioServer server = new NioServer();
     }
 }
 
