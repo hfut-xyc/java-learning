@@ -11,8 +11,6 @@
   <modules>
     <module>java-basic</module>
     <module>java-concurrency</module>
-    <module>java-io</module>
-    <module>java-algorithm</module>
   </modules>
 
 
