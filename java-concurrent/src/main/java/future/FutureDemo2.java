@@ -1,3 +1,5 @@
+package future;
+
 import java.util.concurrent.CompletableFuture;
 
 public class FutureDemo2 {

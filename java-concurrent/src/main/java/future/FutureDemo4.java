@@ -1,10 +1,12 @@
+package future;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-public class FutureDemo3 {
+public class FutureDemo4 {
 
     private static final Random random = new Random();
 
@@ -16,7 +18,8 @@ public class FutureDemo3 {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return random.nextDouble() * 10 + 10;
+        double price = random.nextDouble() * 10 + 10;
+        return price;
     }
 
     public static List<String> getPriceList(String product) {
