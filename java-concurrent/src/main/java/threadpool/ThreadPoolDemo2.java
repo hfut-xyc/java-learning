@@ -4,6 +4,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * ThreadPool shutdown / shutdownNow / awaitTermination
+ */
 public class ThreadPoolDemo2 {
 
     static class Task implements Runnable {
@@ -38,7 +41,7 @@ public class ThreadPoolDemo2 {
         Thread.sleep(1000);
         executorService.shutdown();
         System.out.println(executorService.isTerminated());
-        Thread.sleep(9000);
+        Thread.sleep(5000);
         System.out.println(executorService.isTerminated());
     }
 
@@ -49,7 +52,7 @@ public class ThreadPoolDemo2 {
         }
         Thread.sleep(1000);
         executorService.shutdown();
-        boolean flag = executorService.awaitTermination(6, TimeUnit.SECONDS);
+        boolean flag = executorService.awaitTermination(5, TimeUnit.SECONDS);
         System.out.println(flag);
     }
 
@@ -65,6 +68,6 @@ public class ThreadPoolDemo2 {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        test4();
+        test3();
     }
 }
