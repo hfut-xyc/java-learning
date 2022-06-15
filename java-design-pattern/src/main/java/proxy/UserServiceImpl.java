@@ -1,4 +1,4 @@
-package design.proxy;
+package proxy;
 
 public class UserServiceImpl implements UserService {
 	

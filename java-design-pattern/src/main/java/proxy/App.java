@@ -1,4 +1,4 @@
-package design.proxy;
+package proxy;
 
 public class App {
 
@@ -17,6 +17,6 @@ public class App {
     }
 
     public static void main(String[] args) {
-        test2();
+        test1();
     }
 }
