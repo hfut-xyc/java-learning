@@ -12,7 +12,7 @@ public class FutureDemo3 {
 
     private static final List<String> shops = Arrays.asList("JD", "TMall", "TaoBao", "PDD");
 
-    private static double getPrice(String product) {
+    private static double getPrice() {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -21,22 +21,22 @@ public class FutureDemo3 {
         return random.nextDouble() * 10 + 10;
     }
 
-    public static List<String> getPriceList(String product) {
+    public static List<String> getPriceList() {
         return shops.stream()
-                .map(shop -> String.format("%s price: %.2f", shop, getPrice(product)))
+                .map(shop -> String.format("%s price: %.2f", shop, getPrice()))
                 .collect(Collectors.toList());
     }
 
-    public static List<String> getPriceListParallel(String product) {
+    public static List<String> getPriceListParallel() {
         return shops.parallelStream()
-                .map(shop -> String.format("%s price: %.2f", shop, getPrice(product)))
+                .map(shop -> String.format("%s price: %.2f", shop, getPrice()))
                 .collect(Collectors.toList());
     }
 
-    public static List<String> getPriceListAsync(String product) {
+    public static List<String> getPriceListAsync() {
         List<CompletableFuture<String>> futures =
                 shops.stream().map(shop -> CompletableFuture.supplyAsync(
-                        () -> String.format("%s price: %.2f", shop, getPrice(product))
+                        () -> String.format("%s price: %.2f", shop, getPrice())
                 )).collect(Collectors.toList());
 
         return futures.stream()
@@ -46,7 +46,7 @@ public class FutureDemo3 {
 
     public static void main(String[] args) {
         long start = System.nanoTime();
-        List<String> iphone = getPriceList("iphone");
+        List<String> iphone = getPriceListParallel();
         long end = System.nanoTime();
         System.out.println(iphone);
         System.out.println((end - start) / 1_000_000 + "ms");

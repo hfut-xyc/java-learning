@@ -9,8 +9,7 @@ import java.util.stream.Stream;
 
 public class LambdaDemo {
 
-    private static class Apple {
-
+    static class Apple {
         private String color;
         private Integer weight;
 
@@ -26,7 +25,7 @@ public class LambdaDemo {
         }
     }
 
-    public static void lambda_demo1() {
+    public static void test1() {
         List<String> list = Stream.of("alpha", "beta", "grammar", "delta")
                 .collect(Collectors.toList());
 
@@ -44,7 +43,7 @@ public class LambdaDemo {
         list.sort(Comparator.comparing(String::length));
     }
 
-    public static void lambda_demo2() {
+    public static void test2() {
         List<String> list = Stream.of("alpha", "beta", "grammar", "delta")
                 .collect(Collectors.toList());
 
