@@ -1,12 +1,10 @@
-package threadpool;
+package thread_pool;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-/**
- * ThreadPool shutdown / shutdownNow / awaitTermination
- */
+
 public class ThreadPoolDemo2 {
 
     static class Task implements Runnable {
@@ -68,6 +66,6 @@ public class ThreadPoolDemo2 {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        test3();
+        test4();
     }
 }

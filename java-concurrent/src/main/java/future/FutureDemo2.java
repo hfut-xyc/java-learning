@@ -27,5 +27,6 @@ public class FutureDemo2 {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         test1();
+
     }
 }

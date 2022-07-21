@@ -1,13 +1,10 @@
-package threadpool;
+package thread_pool;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- * ThreadPool Creation
- */
 public class ThreadPoolDemo1 {
 
     static class Task implements Runnable {

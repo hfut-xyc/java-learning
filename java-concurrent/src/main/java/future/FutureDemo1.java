@@ -6,26 +6,21 @@ import java.util.concurrent.*;
 
 public class FutureDemo1 {
 
-    public static void test1_get() {
+    public static void test1() throws ExecutionException, InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(4);
         Future<String> future = executor.submit(() -> {
             Thread.sleep(2500);
             return Thread.currentThread().getName();
         });
         System.out.println(future.isDone());
-        String res = null;
-        try {
-            res = future.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+        String result = future.get();
         System.out.println(future.isDone());
-        System.out.println(res);
+        System.out.println(result);
 
         executor.shutdown();
     }
 
-    public static void test2_exception() {
+    public static void test2() {
         ExecutorService executor = Executors.newFixedThreadPool(4);
         Future<String> future = executor.submit(() -> {
             throw new ArithmeticException("/ by zero");
@@ -39,7 +34,7 @@ public class FutureDemo1 {
         executor.shutdown();
     }
 
-    public static void test3_cancel() {
+    public static void test3() {
         ExecutorService executor = Executors.newFixedThreadPool(4);
         Future<String> future = executor.submit(() -> {
             try {
@@ -58,11 +53,10 @@ public class FutureDemo1 {
             boolean cancel = future.cancel(true);
             System.out.println(cancel);
         }
-
         executor.shutdown();
     }
 
-    public static void test4_future_list() throws ExecutionException, InterruptedException {
+    public static void test4() throws ExecutionException, InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(4);
         List<Future<String>> futures = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
@@ -79,11 +73,18 @@ public class FutureDemo1 {
         executor.shutdown();
     }
 
-    public static void test5_future_task() {
-
+    public static void test5() throws ExecutionException, InterruptedException {
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+        FutureTask<String> futureTask = new FutureTask<>(() -> {
+            Thread.sleep(500);
+            return Thread.currentThread().getName();
+        });
+        executor.submit(futureTask);
+        System.out.println(futureTask.get());
+        executor.shutdown();
     }
 
-    public static void main(String[] args) {
-        test3_cancel();
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        test5();
     }
 }

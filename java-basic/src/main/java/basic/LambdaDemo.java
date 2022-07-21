@@ -1,6 +1,5 @@
 package basic;
 
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.*;
@@ -28,32 +27,20 @@ public class LambdaDemo {
     public static void test1() {
         List<String> list = Stream.of("alpha", "beta", "grammar", "delta")
                 .collect(Collectors.toList());
-
         list.sort(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
                 return o1.length() - o2.length();
             }
         });
-
         list.sort((x, y) -> x.length() - y.length());
-
         list.sort(Comparator.comparing(x -> x.length()));
-
         list.sort(Comparator.comparing(String::length));
     }
 
     public static void test2() {
         List<String> list = Stream.of("alpha", "beta", "grammar", "delta")
                 .collect(Collectors.toList());
-
-        // Consumer<T>: T -> void
-        Consumer<String> c = System.out::println;
-        list.forEach(c);
-
-        // Predicate<T>: T -> boolean
-        Predicate<String> p = x -> x.length() > 4;
-        list.removeIf(p);
 
         // Supplier<T>: () -> T
         Supplier<Apple> s = Apple::new;
@@ -66,6 +53,14 @@ public class LambdaDemo {
         // BiFunction<T, U, R>: (T, U) -> R
         BiFunction<String, Integer, Apple> bf = Apple::new;
         Apple a3 = bf.apply("red", 100);
+
+        // Consumer<T>: T -> void
+        Consumer<String> c = System.out::println;
+        list.forEach(c);
+
+        // Predicate<T>: T -> boolean
+        Predicate<String> p = x -> x.length() > 4;
+        list.removeIf(p);
     }
 
 

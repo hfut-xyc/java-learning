@@ -1,6 +1,6 @@
 package basic;
 
-public class ABC {
+public class StringDemo {
 
     public static void test1() {
         String s1 = "a";
