@@ -18,8 +18,12 @@ public class ThreadPoolTest2 {
             }
         }
     }
-    
-    public void test1() throws InterruptedException {
+
+    public static void main(String[] args) {
+
+    }
+
+    public static void test1() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         for (int i = 0; i < 100; i++) {
             executorService.execute(new Task());
@@ -32,7 +36,7 @@ public class ThreadPoolTest2 {
     }
 
     
-    public void test2() throws InterruptedException {
+    public static void test2() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         for (int i = 0; i < 100; i++) {
             executorService.execute(new Task());
@@ -45,7 +49,7 @@ public class ThreadPoolTest2 {
     }
 
     
-    public void test3() throws InterruptedException {
+    public static void test3() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         for (int i = 0; i < 100; i++) {
             executorService.execute(new Task());
@@ -57,7 +61,7 @@ public class ThreadPoolTest2 {
     }
 
     
-    public void test4() throws InterruptedException {
+    public static void test4() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         for (int i = 0; i < 100; i++) {
             executorService.execute(new Task());

@@ -11,7 +11,11 @@ public class AtomicTest {
     private static final AtomicInteger count2 = new AtomicInteger(0);
     private static final AtomicIntegerArray array = new AtomicIntegerArray(100);
 
-    public void test1() {
+    public static void main(String[] args) {
+        test1();
+    }
+
+    public static void test1() {
         ExecutorService executor = Executors.newFixedThreadPool(10);
         for (int i = 0; i < 10; i++) {
             executor.execute(() -> {
@@ -26,5 +30,6 @@ public class AtomicTest {
         System.out.println(count1);
         System.out.println(count2.get());
     }
+
 
 }

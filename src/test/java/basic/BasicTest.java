@@ -2,10 +2,26 @@ package basic;
 
 import org.junit.Test;
 
-public class StringTest {
+import java.math.BigDecimal;
+import java.util.Timer;
+import java.util.TimerTask;
+
+/**
+ * @date 2022-7-21
+ **/
+public class BasicTest {
 
     @Test
     public void test1() {
+        System.out.println(0.1 + 0.2);
+        System.out.println(1.0 - 0.8);
+        System.out.println(2.013 * 100);
+        System.out.println(123.3 / 100);
+        System.out.println(new BigDecimal("0.1").add(new BigDecimal("0.2")));
+    }
+
+    @Test
+    public void test2() {
         String s1 = "a";
         String s2 = "b";
         String s3 = "ab";               // constant pool
@@ -24,7 +40,7 @@ public class StringTest {
     }
 
     @Test
-    public void test2() {
+    public void test3() {
         final String s1 = "a";
         final String s2 = "b";
         String s3 = "ab";               // constant pool
@@ -33,5 +49,15 @@ public class StringTest {
 
         System.out.println(s3 == s5);   // true
         System.out.println(s4 == s5);   // true
+    }
+
+    public void test4() {
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println(Thread.currentThread().getName());
+            }
+        }, 0, 1000);
     }
 }

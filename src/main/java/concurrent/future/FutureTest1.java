@@ -1,12 +1,9 @@
 package concurrent.future;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
-@Slf4j
 public class FutureTest1 {
 
     public static void main(String[] args) throws Exception {
@@ -19,10 +16,10 @@ public class FutureTest1 {
             Thread.sleep(2000);
             return "hello";
         });
-        log.info("{}", future.isDone());
+        System.out.println(future.isDone());
         String result = future.get();
-        log.info("{}", future.isDone());
-        log.info(result);
+        System.out.println(future.isDone());
+        System.out.println(result);
 
         executor.shutdown();
     }
@@ -36,7 +33,7 @@ public class FutureTest1 {
         try {
             future.get();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            System.out.println(e.getMessage());
         }
         executor.shutdown();
     }
@@ -45,17 +42,17 @@ public class FutureTest1 {
         ExecutorService executor = Executors.newFixedThreadPool(4);
         Future<String> future = executor.submit(() -> {
             try {
-                log.info("waiting...");
+                System.out.println("waiting...");
                 Thread.sleep(4000);
             } catch (InterruptedException e) {
-                log.error(e.getMessage());
+                System.out.println(e.getMessage());
             }
             return Thread.currentThread().getName();
         });
 
         //future.get(1000, TimeUnit.MILLISECONDS);
         boolean cancel = future.cancel(true);
-        log.info("{}", cancel);
+        System.out.println(cancel);
         executor.shutdown();
     }
 
@@ -71,7 +68,7 @@ public class FutureTest1 {
         }
 
         for (Future<String> future : futures) {
-            log.info(future.get());
+            System.out.println(future.get());
         }
         executor.shutdown();
     }
@@ -83,7 +80,7 @@ public class FutureTest1 {
             return "hello";
         });
         executor.submit(futureTask);
-        log.info(futureTask.get());
+        System.out.println(futureTask.get());
         executor.shutdown();
     }
 
