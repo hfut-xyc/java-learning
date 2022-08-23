@@ -51,6 +51,7 @@ public class BasicTest {
         System.out.println(s4 == s5);   // true
     }
 
+    @Test
     public void test4() {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {

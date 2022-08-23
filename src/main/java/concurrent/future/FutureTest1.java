@@ -1,9 +1,12 @@
 package concurrent.future;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
+@Slf4j
 public class FutureTest1 {
 
     public static void main(String[] args) throws Exception {
