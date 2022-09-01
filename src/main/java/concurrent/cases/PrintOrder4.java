@@ -1,49 +1,47 @@
-package concurrent.aqs;
+package concurrent.cases;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.CountDownLatch;
 
 @Slf4j
-public class PrintInOrder1 {
+public class PrintOrder4 {
 
-    private static Semaphore second = new Semaphore(0);
-    private static Semaphore third = new Semaphore(0);
+    private static CountDownLatch second = new CountDownLatch(1);
+    private static CountDownLatch third = new CountDownLatch(1);
 
     public static void first() {
         log.info("first");
-        second.release();
+        second.countDown();
     }
 
     public static void second() throws InterruptedException {
-        second.acquire();
+        second.await();
         log.info("second");
-        third.release();
+        third.countDown();
     }
 
     public static void third() throws InterruptedException {
-        third.acquire();
+        third.await();
         log.info("third");
     }
 
     public static void main(String[] args) {
-        Thread t1 = new Thread(() -> first());
-        Thread t2 = new Thread(() -> {
+        new Thread(PrintOrder3::first).start();
+        new Thread(() -> {
             try {
                 second();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        });
-        Thread t3 = new Thread(() -> {
+        }).start();
+
+        new Thread(() -> {
             try {
                 third();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        });
-        t1.start();
-        t2.start();
-        t3.start();
+        }).start();
     }
 }

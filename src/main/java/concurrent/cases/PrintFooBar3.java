@@ -1,18 +1,17 @@
-package concurrent.aqs;
+package concurrent.cases;
 
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.Semaphore;
 
 @Slf4j
-public class PrintFooBar {
-
-    private static final int n = 5;
+public class PrintFooBar3 {
     private static final Semaphore foo = new Semaphore(1);
     private static final Semaphore bar = new Semaphore(0);
+    private static final int loopCount = 5;
 
     public static void foo() throws InterruptedException {
-        for (int i = 1; i <= n; i++) {
+        for (int i = 0; i < loopCount; i++) {
             foo.acquire();
             log.info("foo");
             bar.release();
@@ -20,7 +19,7 @@ public class PrintFooBar {
     }
 
     public static void bar() throws InterruptedException {
-        for (int i = 1; i <= n; i++) {
+        for (int i = 0; i < loopCount; i++) {
             bar.acquire();
             log.info("bar");
             foo.release();
