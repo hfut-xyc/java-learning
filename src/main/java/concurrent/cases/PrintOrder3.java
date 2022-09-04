@@ -2,46 +2,36 @@ package concurrent.cases;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.Semaphore;
-
 @Slf4j
 public class PrintOrder3 {
-
-    private static Semaphore second = new Semaphore(0);
-    private static Semaphore third = new Semaphore(0);
+    private static volatile int flag = 1;
 
     public static void first() {
+        while (flag != 1) {
+            Thread.yield();
+        }
         log.info("first");
-        second.release();
+        flag = 2;
     }
 
-    public static void second() throws InterruptedException {
-        second.acquire();
+    public static void second() {
+        while (flag != 2) {
+            Thread.yield();
+        }
         log.info("second");
-        third.release();
+        flag = 3;
     }
 
-    public static void third() throws InterruptedException {
-        third.acquire();
+    public static void third() {
+        while (flag != 3) {
+            Thread.yield();
+        }
         log.info("third");
     }
 
     public static void main(String[] args) {
         new Thread(PrintOrder3::first).start();
-        new Thread(() -> {
-            try {
-                second();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        new Thread(() -> {
-            try {
-                third();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        new Thread(PrintOrder3::second).start();
+        new Thread(PrintOrder3::third).start();
     }
 }

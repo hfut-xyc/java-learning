@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PrintOrder1 {
-    private static final int loopCount = 3;
     private static volatile int flag = 1;
     private static final Object lock = new Object();
 
