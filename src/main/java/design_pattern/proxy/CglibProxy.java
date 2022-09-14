@@ -6,12 +6,12 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;
 
-public class CglibProxyFactory {
+public class CglibProxy {
 
     private Object target;
     private MethodInterceptor interceptor;
 
-    public CglibProxyFactory(Object target){
+    public CglibProxy(Object target) {
         this.target = target;
         this.interceptor = new MethodInterceptor() {
             @Override
@@ -24,11 +24,18 @@ public class CglibProxyFactory {
         };
     }
 
-    public Object getProxyInstance(){
+    public Object getProxyInstance() {
         Enhancer en = new Enhancer();
         en.setSuperclass(target.getClass());
         en.setCallback(interceptor);
         return en.create();
+    }
+
+    public static void main(String[] args) {
+        ProductService productService = new ProductService();
+        CglibProxy cglibProxy = new CglibProxy(productService);
+        ProductService productProxy = (ProductService) cglibProxy.getProxyInstance();
+        productProxy.update();
     }
 
 }

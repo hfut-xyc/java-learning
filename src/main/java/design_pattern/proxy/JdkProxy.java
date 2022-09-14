@@ -4,12 +4,12 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-public class JdkProxyFactory {
+public class JdkProxy {
 
     private Object target;
     private InvocationHandler interceptor;
 
-    public JdkProxyFactory(Object target) {
+    public JdkProxy(Object target) {
         this.target = target;
         this.interceptor = new InvocationHandler() {
             @Override
@@ -27,5 +27,12 @@ public class JdkProxyFactory {
                 target.getClass().getClassLoader(),
                 target.getClass().getInterfaces(),
                 interceptor);
+    }
+
+    public static void main(String[] args) {
+        UserService userService = new UserServiceImpl();
+        JdkProxy jdkProxy = new JdkProxy(userService);
+        UserService userProxy = (UserService) jdkProxy.getProxyInstance();
+        userProxy.update();
     }
 }
