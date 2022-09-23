@@ -1,27 +1,27 @@
-package concurrent.cases;
+package concurrent.leetcode;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.CountDownLatch;
 
 @Slf4j
-public class PrintOrder4 {
-    private static Semaphore second = new Semaphore(0);
-    private static Semaphore third = new Semaphore(0);
+public class PrintOrder5 {
+    private static CountDownLatch second = new CountDownLatch(1);
+    private static CountDownLatch third = new CountDownLatch(1);
 
     public static void first() {
         log.info("first");
-        second.release();
+        second.countDown();
     }
 
     public static void second() throws InterruptedException {
-        second.acquire();
+        second.await();
         log.info("second");
-        third.release();
+        third.countDown();
     }
 
     public static void third() throws InterruptedException {
-        third.acquire();
+        third.await();
         log.info("third");
     }
 

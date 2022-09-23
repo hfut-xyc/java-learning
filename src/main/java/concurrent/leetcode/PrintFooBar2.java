@@ -1,35 +1,46 @@
-package concurrent.cases;
+package concurrent.leetcode;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 @Slf4j
-public class PrintFooBar1 {
+public class PrintFooBar2 {
     private static final int loopCount = 3;
     private static volatile boolean flag = true;
-    private static final Object lock = new Object();
+    private static final Lock lock = new ReentrantLock();
+    private static final Condition condition = lock.newCondition();
 
     public static void foo() throws InterruptedException {
         for (int i = 0; i < loopCount; i++) {
-            synchronized (lock) {
+            lock.lock();
+            try {
                 while (!flag) {
-                    lock.wait();
+                    condition.await();
                 }
                 log.info("foo");
                 flag = false;
-                lock.notify();
+                condition.signal();
+            } finally {
+                lock.unlock();
             }
         }
     }
 
     public static void bar() throws InterruptedException {
         for (int i = 0; i < loopCount; i++) {
-            synchronized (lock) {
+            lock.lock();
+            try {
                 while (flag) {
-                    lock.wait();
+                    condition.await();
                 }
                 log.info("bar");
                 flag = true;
-                lock.notify();
+                condition.signal();
+            } finally {
+                lock.unlock();
             }
         }
     }

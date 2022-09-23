@@ -3,6 +3,7 @@ package concurrent.future;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.IntStream;
 
 @Slf4j
 public class FutureTest2 {
@@ -11,7 +12,7 @@ public class FutureTest2 {
         CompletableFuture.supplyAsync(() -> "Hello")
                 .thenApply(x -> x + "World")
                 .thenAccept(log::info)
-                .thenRun(() -> log.info("done!"));
+                .thenRun(() -> log.info("thenRun"));
     }
 
     public static void test2() {
@@ -52,15 +53,24 @@ public class FutureTest2 {
 
     public static void test5() {
         CompletableFuture.supplyAsync(() -> "hello")
-                .thenCompose(s -> CompletableFuture.supplyAsync(() -> s + "world"))
+                .thenCompose(s -> CompletableFuture.supplyAsync(() -> s + "compose"))
                 .thenAccept(log::info);
 
         CompletableFuture.supplyAsync(() -> "hello")
-                .thenCombine(CompletableFuture.supplyAsync(() -> "world"), (x, y) -> x + y)
+                .thenCombine(CompletableFuture.supplyAsync(() -> "combine"), (x, y) -> x + y)
                 .thenAccept(log::info);
     }
 
+    public static void test6() {
+        CompletableFuture[] futures = IntStream.range(0, 4)
+                .mapToObj(i -> CompletableFuture.supplyAsync(() -> "result" + i))
+                .map(f -> f.thenAccept(log::info))
+                .toArray(CompletableFuture[]::new);
+
+        CompletableFuture.allOf(futures).join();
+    }
+
     public static void main(String[] args) {
-        test3();
+        test6();
     }
 }
