@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2022-9-23
  **/
 @Slf4j
-public class DaemonTest {
+public class ThreadDaemonTest {
 
     public static void main(String[] args) {
         Thread t = new Thread(() -> {

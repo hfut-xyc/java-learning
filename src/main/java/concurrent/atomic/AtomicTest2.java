@@ -7,18 +7,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class AtomicTest2 {
 
-    public static void main(String[] args) throws InterruptedException {
-        Account account = new Account(30000);
-        for (int i = 0; i < 1000; i++) {
-            Thread t = new Thread(() -> {
-                account.withdraw(10);
-            });
-            t.start();
-            t.join();
-        }
-        log.info("balance={}", account.balance);
-    }
-
     static class Account {
         private AtomicInteger balance;
 
@@ -38,5 +26,17 @@ public class AtomicTest2 {
                 balance.getAndAdd(-amount);
             }
         }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Account account = new Account(30000);
+        for (int i = 0; i < 1000; i++) {
+            Thread t = new Thread(() -> {
+                account.withdraw(10);
+            });
+            t.start();
+            t.join();
+        }
+        log.info("balance={}", account.balance);
     }
 }
