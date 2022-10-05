@@ -1,74 +1,72 @@
 package concurrent.thread_pool;
 
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-
+@Slf4j
 public class ThreadPoolTest2 {
 
     static class Task implements Runnable {
         @Override
         public void run() {
             try {
-                Thread.sleep(500);
-                System.out.println(Thread.currentThread().getName());
+                Thread.sleep(1000);
+                log.info("finish");
             } catch (InterruptedException e) {
-                System.out.println(Thread.currentThread().getName() + " interrupted");
+                log.info("interrupt");
             }
         }
     }
 
-    public static void main(String[] args) {
-
-    }
-
-    public static void test1() throws InterruptedException {
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-        for (int i = 0; i < 100; i++) {
-            executorService.execute(new Task());
+    public static void test1() {
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        for (int i = 0; i < 4; i++) {
+            executor.execute(new Task());
         }
-        Thread.sleep(1000);
-        System.out.println(executorService.isShutdown());
-        executorService.shutdown();
-        System.out.println(executorService.isShutdown());
-        executorService.execute(new Task());
+        executor.shutdown();
+        log.info("{}", executor.isShutdown());
+        executor.execute(new Task());
     }
 
-    
-    public static void test2() throws InterruptedException {
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-        for (int i = 0; i < 100; i++) {
-            executorService.execute(new Task());
+    public static void test2() {
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        for (int i = 0; i < 4; i++) {
+            executor.execute(new Task());
         }
-        Thread.sleep(1000);
-        executorService.shutdown();
-        System.out.println(executorService.isTerminated());
-        Thread.sleep(5000);
-        System.out.println(executorService.isTerminated());
+        List<Runnable> list = executor.shutdownNow();
+        log.info("{}", executor.isShutdown());
+        log.info("{}", list);
     }
 
-    
     public static void test3() throws InterruptedException {
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-        for (int i = 0; i < 100; i++) {
-            executorService.execute(new Task());
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        for (int i = 0; i < 4; i++) {
+            executor.execute(new Task());
         }
-        Thread.sleep(1000);
-        executorService.shutdown();
-        boolean flag = executorService.awaitTermination(5, TimeUnit.SECONDS);
-        System.out.println(flag);
+        executor.shutdown();
+        log.info("{}", executor.isTerminated());
+        Thread.sleep(3000);
+        log.info("{}", executor.isTerminated());
     }
 
-    
+
     public static void test4() throws InterruptedException {
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-        for (int i = 0; i < 100; i++) {
-            executorService.execute(new Task());
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        for (int i = 0; i < 4; i++) {
+            executor.execute(new Task());
         }
-        Thread.sleep(1000);
-        executorService.shutdownNow();
-        Thread.sleep(3000);
-        System.out.println(executorService.isTerminated());
+        executor.shutdown();
+        boolean flag = executor.awaitTermination(3, TimeUnit.SECONDS);
+        log.info("{}", flag);
     }
+
+
+    public static void main(String[] args) throws InterruptedException {
+        test1();
+    }
+
 }
