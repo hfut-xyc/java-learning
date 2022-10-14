@@ -3,6 +3,7 @@ package concurrent4.producer_consumer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedList;
+import java.util.stream.IntStream;
 
 @Slf4j
 public class ProducerConsumerTest1 {
@@ -19,10 +20,10 @@ public class ProducerConsumerTest1 {
         public void put(String msg) throws InterruptedException {
             synchronized (this) {
                 while (list.size() == capacity) {
-                    log.debug("Wait, queue is full");
+                    log.info("Wait, queue is full");
                     this.wait();
                 }
-                log.debug("put");
+                log.info("put");
                 list.addLast(msg);
                 this.notifyAll();
             }
@@ -31,10 +32,10 @@ public class ProducerConsumerTest1 {
         public String take() throws InterruptedException {
             synchronized (this) {
                 while (list.isEmpty()) {
-                    log.debug("Wait, queue is empty");
+                    log.info("Wait, queue is empty");
                     this.wait();
                 }
-                log.debug("take");
+                log.info("take");
                 String msg = list.removeFirst();
                 this.notifyAll();
                 return msg;
@@ -45,7 +46,7 @@ public class ProducerConsumerTest1 {
     public static void main(String[] args) throws InterruptedException {
         MessageQueue messageQueue = new MessageQueue(2);
 
-        for (int i = 1; i <= 4; i++) {
+        IntStream.rangeClosed(1, 4).forEach(i -> {
             new Thread(() -> {
                 try {
                     messageQueue.put("message");
@@ -53,9 +54,9 @@ public class ProducerConsumerTest1 {
                     e.printStackTrace();
                 }
             }, "Producer-" + i).start();
-        }
+        });
 
-        for (int i = 1; i <= 3; i++) {
+        IntStream.rangeClosed(1, 3).forEach(i -> {
             new Thread(() -> {
                 try {
                     messageQueue.take();
@@ -63,6 +64,6 @@ public class ProducerConsumerTest1 {
                     e.printStackTrace();
                 }
             }, "Consumer-" + i).start();
-        }
+        });
     }
 }
