@@ -20,9 +20,7 @@ public class FutureCancelTest {
             }
             return "hello";
         });
-
         log.info("succeed to cancel? {}", future.cancel(true));
-
         executor.shutdown();
     }
 
@@ -48,7 +46,7 @@ public class FutureCancelTest {
     }
 
     public static void main(String[] args) {
-        test1();
+        test2();
     }
 
 }

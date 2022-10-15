@@ -48,7 +48,7 @@ public class FutureGetTest {
         });
 
         try {
-            future.get(1000, TimeUnit.MILLISECONDS);
+            future.get(1, TimeUnit.SECONDS);
         } catch (ExecutionException | TimeoutException | InterruptedException e) {
             log.error(e.toString());
         }

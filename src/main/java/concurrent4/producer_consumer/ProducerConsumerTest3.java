@@ -16,7 +16,5 @@ public class ProducerConsumerTest3 {
             this.capacity = capacity;
             this.queue = new ArrayBlockingQueue<>(capacity);
         }
-
-
     }
 }

@@ -9,13 +9,9 @@ public class AtomicIntegerTest {
 
     public static void test1() {
         AtomicInteger count = new AtomicInteger(0);
-
         log.info("{}", count.incrementAndGet());
-
         log.info("{}", count.decrementAndGet());
-
         log.info("{}", count.addAndGet(10));
-
         log.info("{}", count.updateAndGet(x -> x * 10));
     }
 
@@ -41,7 +37,7 @@ public class AtomicIntegerTest {
     }
 
     public static void test2() throws InterruptedException {
-        Account account = new Account(30000);
+        Account account = new Account(10000);
         for (int i = 0; i < 1000; i++) {
             Thread t = new Thread(() -> {
                 account.withdraw(10);
@@ -49,7 +45,7 @@ public class AtomicIntegerTest {
             t.start();
             t.join();
         }
-        log.info("balance={}", account.balance);
+        log.info("{}", account.balance);
     }
 
     public static void main(String[] args) throws InterruptedException {
