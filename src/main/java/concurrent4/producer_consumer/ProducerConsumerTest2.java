@@ -28,10 +28,9 @@ public class ProducerConsumerTest2 {
         public void put(String msg) throws InterruptedException {
             lock.lock();
             while (list.size() == capacity) {
-                log.info("producer waiting");
                 notFull.await();
             }
-            list.addLast(msg);
+            list.addFirst(msg);
             log.info("put, size = {}", list.size());
             notEmpty.signalAll();
             lock.unlock();
@@ -40,10 +39,9 @@ public class ProducerConsumerTest2 {
         public void take() throws InterruptedException {
             lock.lock();
             while (list.size() == 0) {
-                log.info("consumer waiting");
                 notEmpty.await();
             }
-            list.removeFirst();
+            list.removeLast();
             log.info("take, size = {}", list.size());
             notFull.signalAll();
             lock.unlock();
@@ -51,7 +49,7 @@ public class ProducerConsumerTest2 {
     }
 
     public static void main(String[] args) {
-        ProducerConsumerTest1.MessageQueue messageQueue = new ProducerConsumerTest1.MessageQueue(2);
+        MessageQueue messageQueue = new MessageQueue(2);
 
         IntStream.rangeClosed(1, 4).forEach(i -> {
             new Thread(() -> {

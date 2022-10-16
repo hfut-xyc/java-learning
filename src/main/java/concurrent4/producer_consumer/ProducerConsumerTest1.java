@@ -20,10 +20,9 @@ public class ProducerConsumerTest1 {
         public void put(String msg) throws InterruptedException {
             synchronized (this) {
                 while (list.size() == capacity) {
-                    log.info("producer waiting");
                     this.wait();
                 }
-                list.addLast(msg);
+                list.addFirst(msg);
                 log.info("put, size = {}", list.size());
                 this.notifyAll();
             }
@@ -32,17 +31,16 @@ public class ProducerConsumerTest1 {
         public void take() throws InterruptedException {
             synchronized (this) {
                 while (list.isEmpty()) {
-                    log.info("consumer waiting");
                     this.wait();
                 }
-                list.removeFirst();
+                list.removeLast();
                 log.info("take, size = {}", list.size());
                 this.notifyAll();
             }
         }
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         MessageQueue messageQueue = new MessageQueue(2);
 
         IntStream.rangeClosed(1, 4).forEach(i -> {
