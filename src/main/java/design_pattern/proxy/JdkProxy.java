@@ -29,6 +29,18 @@ public class JdkProxy {
                 interceptor);
     }
 
+
+    interface UserService {
+        void update();
+    }
+
+    static class UserServiceImpl implements UserService {
+        @Override
+        public void update() {
+            System.out.println("user updated");
+        }
+    }
+
     public static void main(String[] args) {
         UserService userService = new UserServiceImpl();
         JdkProxy jdkProxy = new JdkProxy(userService);

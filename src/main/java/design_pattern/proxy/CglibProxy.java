@@ -31,6 +31,12 @@ public class CglibProxy {
         return en.create();
     }
 
+    static class ProductService {
+        public void update() {
+            System.out.println("product info updated");
+        }
+    }
+
     public static void main(String[] args) {
         ProductService productService = new ProductService();
         CglibProxy cglibProxy = new CglibProxy(productService);

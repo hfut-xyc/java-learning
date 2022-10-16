@@ -11,7 +11,7 @@ public class ProducerConsumerTest1 {
     static class MessageQueue {
 
         private int capacity;
-        private LinkedList<String> list = new LinkedList<>();
+        private final LinkedList<String> list = new LinkedList<>();
 
         public MessageQueue(int capacity) {
             this.capacity = capacity;
@@ -20,25 +20,24 @@ public class ProducerConsumerTest1 {
         public void put(String msg) throws InterruptedException {
             synchronized (this) {
                 while (list.size() == capacity) {
-                    log.info("Wait, queue is full");
+                    log.info("producer waiting");
                     this.wait();
                 }
-                log.info("put");
                 list.addLast(msg);
+                log.info("put, size = {}", list.size());
                 this.notifyAll();
             }
         }
 
-        public String take() throws InterruptedException {
+        public void take() throws InterruptedException {
             synchronized (this) {
                 while (list.isEmpty()) {
-                    log.info("Wait, queue is empty");
+                    log.info("consumer waiting");
                     this.wait();
                 }
-                log.info("take");
-                String msg = list.removeFirst();
+                list.removeFirst();
+                log.info("take, size = {}", list.size());
                 this.notifyAll();
-                return msg;
             }
         }
     }
