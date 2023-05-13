@@ -15,23 +15,23 @@ public class AtomicReferenceTest {
             this.balance = new AtomicReference<>(balance);
         }
 
-        public void deposit(BigDecimal amount) {
+        public void withdraw(BigDecimal amount) {
             //while (true) {
             //    BigDecimal prev = balance.get();
-            //    BigDecimal next = prev.add(amount);
+            //    BigDecimal next = prev.subtract(amount);
             //    if (balance.compareAndSet(prev, next)) {
             //        break;
             //    }
             //}
-            balance.getAndSet(balance.get().add(amount));
+            balance.getAndSet(balance.get().subtract(amount));
         }
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Account account = new Account(new BigDecimal("0"));
-        for (int i = 0; i < 1000; i++) {
+        Account account = new Account(new BigDecimal("1000"));
+        for (int i = 0; i < 100; i++) {
             Thread t = new Thread(() -> {
-                account.deposit(new BigDecimal("10"));
+                account.withdraw(new BigDecimal("10"));
             });
             t.start();
             t.join();

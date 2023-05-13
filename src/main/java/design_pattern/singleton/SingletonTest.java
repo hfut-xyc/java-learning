@@ -1,4 +1,4 @@
-package concurrent4.singleton;
+package design_pattern.singleton;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

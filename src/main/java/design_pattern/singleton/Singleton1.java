@@ -1,4 +1,4 @@
-package concurrent4.singleton;
+package design_pattern.singleton;
 
 /**
  * Hungry Mode

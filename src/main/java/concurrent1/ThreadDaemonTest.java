@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
  **/
 @Slf4j
 public class ThreadDaemonTest {
-
     public static void main(String[] args) {
         Thread t = new Thread(() -> {
             while (true) {
@@ -21,6 +20,6 @@ public class ThreadDaemonTest {
         });
         t.setDaemon(true);
         t.start();
-        log.debug("main thread exit");
+        log.debug("主线程退出");
     }
 }

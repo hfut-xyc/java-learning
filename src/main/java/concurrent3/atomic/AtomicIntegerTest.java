@@ -37,8 +37,8 @@ public class AtomicIntegerTest {
     }
 
     public static void test2() throws InterruptedException {
-        Account account = new Account(10000);
-        for (int i = 0; i < 1000; i++) {
+        Account account = new Account(1000);
+        for (int i = 0; i < 100; i++) {
             Thread t = new Thread(() -> {
                 account.withdraw(10);
             });
