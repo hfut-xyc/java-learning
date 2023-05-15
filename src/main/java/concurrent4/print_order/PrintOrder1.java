@@ -9,9 +9,6 @@ public class PrintOrder1 {
 
     public static void first() throws InterruptedException {
         synchronized (lock) {
-            while (flag != 1) {
-                lock.wait();
-            }
             log.info("first");
             flag = 2;
             lock.notifyAll();

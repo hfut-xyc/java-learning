@@ -7,9 +7,6 @@ public class PrintOrder3 {
     private static volatile int flag = 1;
 
     public static void first() {
-        while (flag != 1) {
-            Thread.yield();
-        }
         log.info("first");
         flag = 2;
     }
@@ -30,8 +27,8 @@ public class PrintOrder3 {
     }
 
     public static void main(String[] args) {
-        new Thread(PrintOrder3::first).start();
-        new Thread(PrintOrder3::second).start();
         new Thread(PrintOrder3::third).start();
+        new Thread(PrintOrder3::second).start();
+        new Thread(PrintOrder3::first).start();
     }
 }

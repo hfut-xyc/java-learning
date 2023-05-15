@@ -15,9 +15,6 @@ public class PrintOrder2 {
     public static void first() throws InterruptedException {
         lock.lock();
         try {
-            while (flag != 1) {
-                condition.await();
-            }
             log.info("first");
             flag = 2;
             condition.signalAll();
