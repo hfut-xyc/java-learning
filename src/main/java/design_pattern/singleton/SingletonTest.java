@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 public class SingletonTest {
 
     public static void main(String[] args) {
-        test3();
+        test1();
     }
 
     private static void test1() {
