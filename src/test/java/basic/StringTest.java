@@ -37,4 +37,20 @@ public class StringTest {
         System.out.println(s3 == s5);   // true
         System.out.println(s4 == s5);   // true
     }
+
+    @Test
+    public void test3() {
+        String s1 = "ab";
+        String s2 = new String("a") + new String("b");
+        s2.intern();    // 入池失败
+        System.out.println(s1 == s2); // false
+    }
+
+    @Test
+    public void test4() {
+        String s2 = new String("a") + new String("b");
+        s2.intern();    // 入池成功
+        String s1 = "ab";
+        System.out.println(s1 == s2); // true
+    }
 }
