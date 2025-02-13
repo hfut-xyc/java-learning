@@ -1,45 +1,50 @@
-package algorithm.producer_consumer;
+package concurrent.application.producer_consumer;
 
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedList;
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.IntStream;
 
 /**
  * @date 2022-10-14
  **/
 @Slf4j
-public class ProducerConsumerTest3 {
+public class ProducerConsumerTest2 {
 
     static class MessageQueue {
+        private int capacity;
         private final LinkedList<String> list = new LinkedList<>();
-        private final Semaphore mutex;
-        private final Semaphore produceSemaphore;
-        private final Semaphore consumeSemaphore;
+        private final Lock lock = new ReentrantLock();
+        private final Condition notFull = lock.newCondition();
+        private final Condition notEmpty = lock.newCondition();
 
         public MessageQueue(int capacity) {
-            mutex = new Semaphore(1);
-            produceSemaphore = new Semaphore(capacity);
-            consumeSemaphore = new Semaphore(0);
+            this.capacity = capacity;
         }
 
         public void put(String msg) throws InterruptedException {
-            produceSemaphore.acquire();
-            mutex.acquire();
+            lock.lock();
+            while (list.size() == capacity) {
+                notFull.await();
+            }
             list.addFirst(msg);
             log.info("put, size = {}", list.size());
-            mutex.release();
-            consumeSemaphore.release();
+            notEmpty.signalAll();
+            lock.unlock();
         }
 
         public void take() throws InterruptedException {
-            consumeSemaphore.acquire();
-            mutex.acquire();
+            lock.lock();
+            while (list.size() == 0) {
+                notEmpty.await();
+            }
             list.removeLast();
             log.info("take, size = {}", list.size());
-            mutex.release();
-            produceSemaphore.release();
+            notFull.signalAll();
+            lock.unlock();
         }
     }
 

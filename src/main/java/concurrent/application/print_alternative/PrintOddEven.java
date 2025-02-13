@@ -1,33 +1,38 @@
-package algorithm.print_alternative;
+package concurrent.application.print_alternative;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class PrintFooBar1 {
-    private static final int loopCount = 3;
-    private static volatile boolean flag = true;
+public class PrintOddEven {
+
+    private static final int loopCount = 5;
+    private static boolean flag = true;
     private static final Object lock = new Object();
 
-    public static void foo() throws InterruptedException {
+    public static void odd() throws InterruptedException {
         for (int i = 0; i < loopCount; i++) {
             synchronized (lock) {
                 while (!flag) {
                     lock.wait();
                 }
-                log.info("foo");
+                if (i % 2 == 1) {
+                    log.info("{}", i);
+                }
                 flag = false;
                 lock.notify();
             }
         }
     }
 
-    public static void bar() throws InterruptedException {
+    public static void even() throws InterruptedException {
         for (int i = 0; i < loopCount; i++) {
             synchronized (lock) {
                 while (flag) {
                     lock.wait();
                 }
-                log.info("bar");
+                if (i % 2 == 0) {
+                    log.info("{}", i);
+                }
                 flag = true;
                 lock.notify();
             }
@@ -35,20 +40,22 @@ public class PrintFooBar1 {
     }
 
     public static void main(String[] args) {
-        new Thread(() -> {
+        Thread t1 = new Thread(() -> {
             try {
-                foo();
+                odd();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }).start();
+        }, "odd");
 
-        new Thread(() -> {
+        Thread t2 = new Thread(() -> {
             try {
-                bar();
+                even();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }).start();
+        }, "even");
+        t1.start();
+        t2.start();
     }
 }

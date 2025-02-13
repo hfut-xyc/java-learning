@@ -1,51 +1,37 @@
-package algorithm.print_order;
+package concurrent.application.print_order;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 @Slf4j
-public class PrintOrder2 {
+public class PrintOrder1 {
     private static volatile int flag = 1;
-    private static final Lock lock = new ReentrantLock();
-    private static final Condition condition = lock.newCondition();
+    private static final Object lock = new Object();
 
     public static void first() throws InterruptedException {
-        lock.lock();
-        try {
+        synchronized (lock) {
             log.info("first");
             flag = 2;
-            condition.signalAll();
-        } finally {
-            lock.unlock();
+            lock.notifyAll();
         }
     }
 
     public static void second() throws InterruptedException {
-        lock.lock();
-        try {
+        synchronized (lock) {
             while (flag != 2) {
-                condition.await();
+                lock.wait();
             }
             log.info("second");
             flag = 3;
-            condition.signalAll();
-        } finally {
-            lock.unlock();
+            lock.notifyAll();
         }
     }
 
     public static void third() throws InterruptedException {
-        lock.lock();
-        try {
+        synchronized (lock) {
             while (flag != 3) {
-                condition.await();
+                lock.wait();
             }
             log.info("third");
-        } finally {
-            lock.unlock();
         }
     }
 

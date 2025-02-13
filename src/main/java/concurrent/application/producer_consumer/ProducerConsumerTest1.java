@@ -1,4 +1,4 @@
-package algorithm.producer_consumer;
+package concurrent.application.producer_consumer;
 
 import lombok.extern.slf4j.Slf4j;
 

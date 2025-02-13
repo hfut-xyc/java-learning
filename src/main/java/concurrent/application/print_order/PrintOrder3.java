@@ -1,4 +1,4 @@
-package algorithm.print_order;
+package concurrent.application.print_order;
 
 import lombok.extern.slf4j.Slf4j;
 

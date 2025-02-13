@@ -1,12 +1,15 @@
-package algorithm.stack;
+package basic;
 
+
+import org.junit.Test;
 
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-public class Calculator {
+public class CalculatorTest {
 
-    public static void main(String[] args) {
+    @Test
+    public void test() {
         String s = "11+20+30";
         LinkedList<String> strs = infix2postfix(s);
         System.out.println(strs);
@@ -20,7 +23,6 @@ public class Calculator {
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
             if (token.trim().length() == 0) {
-                continue;
             } else if (!isOpreator(token)) {
                 result.addLast(token);
             } else if ("(".equals(token)) {
@@ -46,24 +48,6 @@ public class Calculator {
             result.addLast(stack.pollLast());
         }
         return result;
-    }
-
-
-    private static boolean isOpreator(String token) {
-        return "+".equals(token) ||
-                "-".equals(token) ||
-                "*".equals(token) ||
-                "/".equals(token) ||
-                "(".equals(token) ||
-                ")".equals(token);
-    }
-
-    private static int prior(String token) {
-        if ("+".equals(token) || "-".equals(token))
-            return 1;
-        if ("*".equals(token) || "/".equals(token))
-            return 2;
-        return 0;
     }
 
     public static int postfix2Value(LinkedList<String> postfix) {
@@ -95,4 +79,20 @@ public class Calculator {
         return stack.pollLast();
     }
 
+    private static boolean isOpreator(String token) {
+        return "+".equals(token) ||
+                "-".equals(token) ||
+                "*".equals(token) ||
+                "/".equals(token) ||
+                "(".equals(token) ||
+                ")".equals(token);
+    }
+
+    private static int prior(String token) {
+        if ("+".equals(token) || "-".equals(token))
+            return 1;
+        if ("*".equals(token) || "/".equals(token))
+            return 2;
+        return 0;
+    }
 }
